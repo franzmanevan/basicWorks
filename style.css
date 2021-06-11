@@ -1,0 +1,67 @@
+html {
+	background-color: #adcdf7;
+}
+body {
+	background-color: #adcdf7;
+}
+#window {
+	padding: 0px;
+	margin: 0px;
+}
+#titleRow h1 {
+	height: 95%;
+	position: relative;
+	left: 38%;
+	top: 5%;
+	font-size: 65px;
+	color: gray;
+	overflow: hidden;
+	overflow-wrap: break-word;
+
+}
+
+#titleRow {
+	background-color: lightgrey;
+	height: 15%;
+	min-height: 80px;
+}
+
+ul {
+	overflow: hidden;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	background-color: #7ea0cc;
+}
+li {
+	float: left;
+}
+li a {
+	display: block;
+	color: #1b2170;
+  	text-align: center;
+  	padding: 5px 14px;
+  	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	color: white;
+	background-color: darkgray;
+	text-decoration: none;
+}
+
+.active {
+	background-color: gray;
+	color: white;
+}
+a:hover(.active) {
+	text-decoration: none;
+}
+
+#info {
+	color: #1b2170;
+}
+
+.col-sm-12 {
+	border-color: green;
+}

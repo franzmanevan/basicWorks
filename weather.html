@@ -1,0 +1,286 @@
+<DOCTYPE! html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta author="Evan Franzman">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>Final Project</title>
+	<link rel="stylesheet" href="style.css">
+	<script> 
+		var coordsURL="https://api.clearllc.com/api/v2/miamidb/_table/zipcode?api_key=bed859b37ac6f1dd59387829a18db84c22ac99c09ee0f5fb99cb708364858818&ids=";
+		var forecastURL="https://api.openweathermap.org/data/2.5/onecall?appid=5e832e56750c97a9c1c1535e316b868a&exclude=hourly";
+		var iconURL="http://openweathermap.org/img/wn/"
+		coords();
+		forecast();
+		function coords(zipcode) {
+			a=$.ajax({
+				url: coordsURL + zipcode,
+				method: "GET"
+			}).done(function(data) {
+				//console.log(data.resource[0].latitude);
+				//console.log(data.resource[0].longitude);
+				$("#city").html("");
+				$("#city").append(data.resource[0].city + ", " + data.resource[0].state);
+				forecast(data.resource[0].latitude, data.resource[0].longitude);
+			}).fail(function(error) {
+				console.log(error.statusText);
+				//Display error at some point
+			});
+		}
+
+		function forecast(latitude, longitude) {
+			a=$.ajax({
+				url: forecastURL + "&lat=" + latitude + "&lon=" + longitude,
+				method: "GET"
+			}).done(function(data) {
+				//initialize current
+				$("#temp").html("");
+				$("#feelsLike").html("");
+				$("#humidity").html("");
+				$("#UV").html("");
+				$("#weather").html("");
+				//update current
+				var t = data.current.temp;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp").append(t);
+				t = data.current.feels_like;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#feelsLike").append(t);
+				$("#humidity").append(data.current.humidity);
+				$("#UV").append(data.current.uvi);
+				$("#weather").append(data.current.weather[0].description);
+				//put icon for current
+				$("#icon").html("");
+				$("#icon").append("<img src='" + iconURL + data.current.weather[0].icon + "@2x.png'>");
+				//initialize the other days
+				$("#temp2").html("");
+				$("#weather2").html("");
+				t = data.daily[0].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp2").append(t);
+				$("#weather2").append(data.daily[0].weather[0].description);
+				$("#icon2").html("");
+				$("#icon2").append("<img src='" + iconURL + data.daily[0].weather[0].icon + "@2x.png'>");
+
+				$("#temp3").html("");
+				$("#weather3").html("");
+				t = data.daily[1].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp3").append(t);
+				$("#weather3").append(data.daily[1].weather[0].description);
+				$("#icon3").html("");
+				$("#icon3").append("<img src='" + iconURL + data.daily[1].weather[0].icon + "@2x.png'>");
+
+				$("#temp4").html("");
+				$("#weather4").html("");
+				t = data.daily[2].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp4").append(t);
+				$("#weather4").append(data.daily[2].weather[0].description);
+				$("#icon4").html("");
+				$("#icon4").append("<img src='" + iconURL + data.daily[2].weather[0].icon + "@2x.png'>");
+
+				$("#temp5").html("");
+				$("#weather5").html("");
+				t = data.daily[3].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp5").append(t);
+				$("#weather5").append(data.daily[3].weather[0].description);
+				$("#icon5").html("");
+				$("#icon5").append("<img src='" + iconURL + data.daily[3].weather[0].icon + "@2x.png'>");
+
+				$("#temp6").html("");
+				$("#weather6").html("");
+				t = data.daily[4].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp6").append(t);
+				$("#weather6").append(data.daily[4].weather[0].description);
+				$("#icon6").html("");
+				$("#icon6").append("<img src='" + iconURL + data.daily[4].weather[0].icon + "@2x.png'>");
+
+				$("#temp7").html("");
+				$("#weather7").html("");
+				t = data.daily[5].temp.day;
+				t = (t - 273.15) * 9/5 + 32;
+				t = +t.toFixed(2);
+				$("#temp7").append(t);
+				$("#weather7").append(data.daily[5].weather[0].description);
+				$("#icon7").html("");
+				$("#icon7").append("<img src='" + iconURL + data.daily[5].weather[0].icon + "@2x.png'>");
+			}).fail(function(error) {
+
+			})
+		}
+
+		function getDays(dayId) {
+			 var d = new Date(); 
+			 var n = d.getDay() + parseInt(dayId);
+			 if (n > 6) {
+			 	n--;
+			 	n = n %6;
+			 }
+			 if (n == 0) {
+			 	$("#" + dayId).append("Sunday");
+			 } else if (n == 1) {
+			 	$("#" + dayId).append("Monday");
+			 } else if (n == 2) {
+			 	$("#" + dayId).append("Tuesday");
+			 } else if (n == 3) {
+			 	$("#" + dayId).append("Wednesday");
+			 } else if (n == 4) {
+			 	$("#" + dayId).append("Thursday");
+			 } else if (n == 5) {
+			 	$("#" + dayId).append("Friday");
+			 } else if (n == 6) {
+			 	$("#" + dayId).append("Saturday");
+			 }
+		}
+
+		window.onload = function() {
+			getDays("2");
+			getDays("3");
+			getDays("4");
+			getDays("5");
+			getDays("6");
+		}
+	</script>
+	<style>
+		#t {
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#f {
+
+		}
+	</style>
+</head>
+<body>
+	
+	<div id="window" class="container-fluid">
+		<div id="titleRow" class="row" >
+			<h1>Final Project</h1>
+		</div>
+			<ul>
+				<li><a href="final_homePage.html">Information</a></li>
+				<li><a href="calculator.html">Calculator</a></li>
+				<li><a href="weather.html" class="active">Weather</a></li>
+				<li><a href="sensorUpdate.html">Sensor Update</a></li>
+			</ul>
+
+	</div>
+	<form id="f">
+		<br>
+		<label for="zip">Enter Zipcode:</label>
+		<input type="number" name="zip" id="zip">
+		<input type="button" value="Find" onclick="coords(document.getElementById('zip').value)">
+		<h1 id="city"></h1>
+		<div class="row">
+			<div class="col-sm-4 offset-sm-3 box" id="today">
+				<table> 
+					<thead><tr><h2>Current Forecast</h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp">&nbsp;</td></tr>
+						<tr><td>Feels Like:</td><td id="feelsLike">&nbsp;</td></tr>
+						<tr><td>Humidity:</td><td id="humidity">&nbsp;</td></tr>
+						<tr><td>UV Index:</td><td id="UV">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather">&nbsp;</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-sm-3 box" id="icon">
+			</div>
+		</div>
+		<div id="week">
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="two">
+					<table> 
+					<thead><tr><h2>Tomorrow</h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp2">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather2">&nbsp;</td></tr>
+						<tr><td></td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon2">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="three">
+					<table> 
+					<thead><tr><h2 id="2"></h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp3">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather3">&nbsp;</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon3">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="four">
+					<table> 
+					<thead><tr><h2 id="3"></h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp4">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather4">&nbsp;</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon4">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="five">
+					<table> 
+					<thead><tr><h2 id="4"></h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp5">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather5">&nbsp;</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon5">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="six">
+					<table> 
+					<thead><tr><h2 id="5"></h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp6">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather6">&nbsp;</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon6">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 offset-sm-3 box" id="seven">
+					<table> 
+					<thead><tr><h2 id="6"></h2></tr></thead>
+					<tbody>
+						<tr><td>Temperature:</td><td id="temp7">&nbsp;</td></tr>
+						<tr><td>Weather:</td><td id="weather7">&nbsp;</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="col-sm-3 box" id="icon7">
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

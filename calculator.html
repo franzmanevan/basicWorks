@@ -1,0 +1,60 @@
+<DOCTYPE! html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta author="Evan Franzman">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>Final Project</title>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		var URL="https://api.clearllc.com/api/v2/math/";
+		var key="?api_key=bed859b37ac6f1dd59387829a18db84c22ac99c09ee0f5fb99cb708364858818&";
+		op();
+		function op(n1, n2, option) {
+			a=$.ajax({
+				url: URL + option + key + "n1=" + n1 + "&n2=" + n2,
+				method: "GET"
+			}).done(function(data) {
+				$("#answer").html("");
+				$("#answer").append("Answer: " + data.result);
+			}).fail(function(error) {
+
+			});
+		}
+	</script>
+	<style>
+		#f {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="window" class="container-fluid">
+		<div id="titleRow" class="row" >
+			<h1>Final Project</h1>
+		</div>
+			<ul>
+				<li><a href="final_homePage.html">Information</a></li>
+				<li><a href="calculator.html" class="active">Calculator</a></li>
+				<li><a href="weather.html">Weather</a></li>
+				<li><a href="sensorUpdate.html">Sensor Update</a></li>
+			</ul>
+	</div>
+	<form id="f">
+				<br>
+				<input type="number" name="n1" id="n1">
+				<select name="operation" id="operation">
+					<option value="Add">+</option>
+					<option value="Subtract">-</option>
+					<option value="Divide">/</option>
+					<option value="Multiply">*</option>
+				</select>
+				<input type="number" name="n2" id="n2">
+				<input type="button" value="Execute" onclick="op(document.getElementById('n1').value, document.getElementById('n2').value ,document.getElementById('operation').value)"><br><br>
+				<p id="answer">Answer: </p>
+			</form>
+</body>
+</html>
